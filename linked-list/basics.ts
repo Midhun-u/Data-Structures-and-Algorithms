@@ -105,6 +105,35 @@ class LinkedList{
 
     }
 
+    insertAt(value: number, index: number){
+
+        const newNode = new LinkedListNode(value)
+
+        if(!this.head){
+            this.head = newNode
+            this.tail = newNode
+            return
+        }
+
+        if(index === 0){
+            this.head = newNode
+            return
+        }
+
+        let targetIndex = 0
+        let current = this.head
+
+        while(current.next && targetIndex < index - 1){
+            current = current.next
+            targetIndex++
+        }
+
+        let previousNode = current.next
+        current.next = newNode
+        newNode.next = previousNode
+
+    }
+
 }
 
 const linkedList = new LinkedList()
@@ -124,6 +153,10 @@ const nodeOne = linkedList.search(1)
 const nodeTwo = linkedList.search(2)
 
 // Delete
-linkedList.delete(3)
+linkedList.delete(-1)
+linkedList.delete(-2)
+
+// InsertAt
+linkedList.insertAt(10, 2)
 
 linkedList.printValues()
