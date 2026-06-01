@@ -18,9 +18,11 @@ class LinkedListNode implements NodeType{
 class LinkedList{
 
     head: NodeType | null
+    tail: NodeType | null
 
     constructor(){
         this.head = null
+        this.tail = null
     }
 
     appendValue(value: number){
@@ -29,16 +31,14 @@ class LinkedList{
         
         if(!this.head){
             this.head = newNode
+            this.tail = newNode
             return
         }
 
-        let current = this.head
-
-        while(current.next){
-            current = current.next
+        if(this.tail){
+            this.tail.next = newNode
+            this.tail = newNode
         }
-
-        current.next = newNode
 
     }
 
@@ -100,6 +100,7 @@ class LinkedList{
 
         if(current.next){
             current.next = current.next.next
+            this.tail = current
         }
 
     }
