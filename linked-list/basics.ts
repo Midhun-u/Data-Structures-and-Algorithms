@@ -1,53 +1,53 @@
-interface NodeType{
+interface NodeType {
     value: number
     next: NodeType | null
 }
 
-class LinkedListNode implements NodeType{
+class LinkedListNode implements NodeType {
 
     value: number
     next: NodeType | null
 
-    constructor(value: number){
+    constructor(value: number) {
         this.value = value
         this.next = null
     }
 
 }
 
-class LinkedList{
+class LinkedList {
 
     head: NodeType | null
     tail: NodeType | null
 
-    constructor(){
+    constructor() {
         this.head = null
         this.tail = null
     }
 
-    appendValue(value: number){
+    appendValue(value: number) {
 
         const newNode = new LinkedListNode(value)
-        
-        if(!this.head){
+
+        if (!this.head) {
             this.head = newNode
             this.tail = newNode
             return
         }
 
-        if(this.tail){
+        if (this.tail) {
             this.tail.next = newNode
             this.tail = newNode
         }
 
     }
 
-    printValues(){
+    printValues() {
 
         let current = this.head
         const values: Array<number> = []
 
-        while(current){
+        while (current) {
             values.push(current.value)
             current = current.next
         }
@@ -56,7 +56,7 @@ class LinkedList{
 
     }
 
-    prependValue(value: number){
+    prependValue(value: number) {
 
         const newNode = new LinkedListNode(value)
 
@@ -65,13 +65,19 @@ class LinkedList{
 
     }
 
-    search(value: number){
+    search(value: number) {
 
-        let current = this.head
+        if (!this.head || !this.tail) return null
 
-        while(current){
+        if (this.head.value === value) return this.head
 
-            if(current.value === value){
+        if (this.tail.value === value) return this.tail
+
+        let current: NodeType | null = this.head
+
+        while (current) {
+
+            if (current.value === value) {
                 return current
             }
 
@@ -83,39 +89,40 @@ class LinkedList{
 
     }
 
-    delete(value: number){
+    delete(value: number) {
 
-        if(!this.head) return
+        if (!this.head) return
 
-        if(this.head.value === value){
+        if (this.head.value === value) {
             this.head = this.head.next
             return
         }
 
         let current = this.head
 
-        while(current.next && current.next.value !== value){
+        while (current.next && current.next.value !== value) {
             current = current.next
         }
 
-        if(current.next){
+        if (current.next) {
             current.next = current.next.next
             this.tail = current
         }
 
     }
 
-    insertAt(value: number, index: number){
+    insertAt(value: number, index: number) {
 
         const newNode = new LinkedListNode(value)
 
-        if(!this.head){
+        if (!this.head) {
             this.head = newNode
             this.tail = newNode
             return
         }
 
-        if(index === 0){
+        if (index === 0) {
+            newNode.next = this.head
             this.head = newNode
             return
         }
@@ -123,7 +130,7 @@ class LinkedList{
         let targetIndex = 0
         let current = this.head
 
-        while(current.next && targetIndex < index - 1){
+        while (current.next && targetIndex < index - 1) {
             current = current.next
             targetIndex++
         }
@@ -157,6 +164,8 @@ linkedList.delete(-1)
 linkedList.delete(-2)
 
 // InsertAt
-linkedList.insertAt(10, 2)
+linkedList.insertAt(10, 0)
 
 linkedList.printValues()
+
+export { }
