@@ -19,10 +19,19 @@ class LinkedList {
 
     head: NodeType | null
     tail: NodeType | null
+    private size = 0
 
     constructor() {
         this.head = null
         this.tail = null
+    }
+
+    private incrementSize(value: number) {
+        this.size = this.size + value
+    }
+
+    get getSize() {
+        return this.size
     }
 
     appendValue(value: number) {
@@ -30,14 +39,22 @@ class LinkedList {
         const newNode = new LinkedListNode(value)
 
         if (!this.head) {
+
             this.head = newNode
             this.tail = newNode
+
+            this.incrementSize(1)
+
             return
         }
 
         if (this.tail) {
+
             this.tail.next = newNode
             this.tail = newNode
+
+            this.incrementSize(1)
+
         }
 
     }
@@ -62,6 +79,8 @@ class LinkedList {
 
         newNode.next = this.head
         this.head = newNode
+
+        this.incrementSize(1)
 
     }
 
@@ -94,7 +113,11 @@ class LinkedList {
         if (!this.head) return
 
         if (this.head.value === value) {
+
             this.head = this.head.next
+
+            this.incrementSize(-1)
+
             return
         }
 
@@ -105,25 +128,41 @@ class LinkedList {
         }
 
         if (current.next) {
+
             current.next = current.next.next
             this.tail = current
+
+            this.incrementSize(-1)
+
         }
 
     }
 
     insertAt(value: number, index: number) {
 
+        if(index >= this.size){
+            throw new Error("Range out of linked list")
+        }
+
         const newNode = new LinkedListNode(value)
 
         if (!this.head) {
+
             this.head = newNode
             this.tail = newNode
+
+             this.incrementSize(1)
+
             return
         }
 
         if (index === 0) {
+
             newNode.next = this.head
             this.head = newNode
+
+             this.incrementSize(1)
+
             return
         }
 
@@ -138,6 +177,8 @@ class LinkedList {
         let previousNode = current.next
         current.next = newNode
         newNode.next = previousNode
+
+        this.incrementSize(1)
 
     }
 

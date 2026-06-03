@@ -169,6 +169,8 @@ class DoublyLinkedList {
 
             this.incrementSize(1)
 
+            return
+
         }
 
         if(index === 0){
@@ -183,12 +185,94 @@ class DoublyLinkedList {
 
         }
 
-        // 1 -> 2 -> 3
-
         if(index === this.size - 1){
+
             this.tail.previous? this.tail.previous.next = newNode: null
             newNode.previous = this.tail.previous
             newNode.next = this.tail
+
+            this.incrementSize(1)
+
+            return
+
+        }
+
+        // 0 -> 1 -> 2 -> 5 -> 3 -> 4
+        
+        let position: number = 0
+        let current = this.head.next
+
+        while(current && current.next && position < index - 2){
+            current = current.next
+            position++
+        }
+
+        if(current){
+
+            const nextNode = current.next as NodeType
+            current.next = newNode as NodeType
+            newNode.next = nextNode
+            newNode.previous = current
+            nextNode.previous = newNode
+
+            this.incrementSize(1)
+
+        }
+
+        return
+
+    }
+
+    delete(value: number){
+
+        if(!this.head || !this.tail) return
+
+        if(this.head.value === value && this.head.next){
+    
+            this.head = this.head.next
+            this.head.previous = null
+
+            this.incrementSize(-1)
+            
+            return
+
+        }
+
+        if(this.head.value == value && !this.head.next){
+
+            this.head = null
+            this.tail = null
+
+            this.incrementSize(-1)
+
+            return
+
+        }
+
+        if(this.tail.value === value){
+
+            this.tail = this.tail.previous as NodeType
+            this.tail.next = null
+
+            return
+
+        }
+
+        let current = this.head.next
+
+        while(current && current.value){
+
+            if(current.value === value){
+
+                current.previous = current.next? current.next.next: null
+                this.incrementSize(-1)
+
+                return
+
+            }
+
+            current = current.next
+
         }
 
     }
@@ -207,8 +291,10 @@ doublyLinkedList.appendValue(4)
 doublyLinkedList.prependValue(0)
 
 // Insert at
-doublyLinkedList.insertAt(-1, 0)
-doublyLinkedList.insertAt(5, doublyLinkedList.getSize - 1)
+doublyLinkedList.insertAt(5, 3)
+
+// Delete
+doublyLinkedList.delete(4)
 
 // Print next values
 doublyLinkedList.printNextValues()
