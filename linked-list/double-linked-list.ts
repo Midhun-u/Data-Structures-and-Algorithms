@@ -22,11 +22,19 @@ class DoublyLinkedList {
 
     head: NodeType | null
     tail: NodeType | null
-    size: number = 0
+    private size: number = 0
 
     constructor() {
         this.head = null
         this.tail = null
+    }
+
+    private incrementSize(value: number){
+        this.size = this.size + value
+    }
+
+    get getSize(){
+        return this.size
     }
 
     appendValue(value: number) {
@@ -38,7 +46,7 @@ class DoublyLinkedList {
             this.head = newNode
             this.tail = newNode
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
             return
         }
@@ -49,7 +57,7 @@ class DoublyLinkedList {
             this.tail = newNode
             this.tail.previous = this.head
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
             return
         }
@@ -60,7 +68,7 @@ class DoublyLinkedList {
             newNode.previous = this.tail
             this.tail = newNode
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
         }
 
@@ -112,7 +120,7 @@ class DoublyLinkedList {
             this.head = newNode
             this.tail = newNode
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
             return
         }
@@ -121,7 +129,7 @@ class DoublyLinkedList {
         this.head.previous.next = this.head
         this.head = newNode
 
-        this.size = this.size + 1
+        this.incrementSize(1)
 
 
     }
@@ -154,12 +162,12 @@ class DoublyLinkedList {
 
         const newNode = new DoublyLinkedListNode(value)
 
-        if (!this.head) {
+        if (!this.head || !this.tail) {
 
             this.head = newNode
             this.tail = newNode
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
         }
 
@@ -169,14 +177,18 @@ class DoublyLinkedList {
             this.head.previous = newNode
             this.head = newNode
 
-            this.size = this.size + 1
+            this.incrementSize(1)
 
             return
 
         }
 
-        if(index === this.size - 1){
+        // 1 -> 2 -> 3
 
+        if(index === this.size - 1){
+            this.tail.previous? this.tail.previous.next = newNode: null
+            newNode.previous = this.tail.previous
+            newNode.next = this.tail
         }
 
     }
@@ -193,6 +205,10 @@ doublyLinkedList.appendValue(4)
 
 // Prepend
 doublyLinkedList.prependValue(0)
+
+// Insert at
+doublyLinkedList.insertAt(-1, 0)
+doublyLinkedList.insertAt(5, doublyLinkedList.getSize - 1)
 
 // Print next values
 doublyLinkedList.printNextValues()
