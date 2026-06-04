@@ -1,25 +1,33 @@
-class Stack<Type>{
+class Stack<Type> {
 
     private items: Array<Type> = []
 
-    push(value: Type){
+    push(value: Type) {
         this.items.push(value)
     }
 
-    pop(){
+    pop() {
+
+        if (!this.items.length) throw new Error("There is no elements in the stack")
+
         this.items.pop()
+
     }
 
-    peek(){
+    peek() {
         return this.items[this.items.length - 1]
     }
 
-    isEmpty(){
+    isEmpty() {
         return this.items.length === 0
     }
 
-    print(){
+    print() {
         console.log(this.items)
+    }
+
+    getSize(){
+        return this.items.length
     }
 
 }
@@ -46,4 +54,4 @@ console.log("Empty: ", stack.isEmpty())
 // Print
 stack.print()
 
-export {}
+export { }
