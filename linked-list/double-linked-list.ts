@@ -305,3 +305,5 @@ doublyLinkedList.printPreviousValues()
 // Search
 const nodeOne = doublyLinkedList.search(1)
 const nodeTwo = doublyLinkedList.search(2)
+
+export {}
