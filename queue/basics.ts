@@ -1,23 +1,19 @@
 interface NodeType<Type>{
     value: Type
-    previous: NodeType<Type> | null
     next: NodeType<Type> | null
 }
 
 class LinkedListNode<Type> implements NodeType<Type>{
     value: Type
-    previous: NodeType<Type> | null
     next: NodeType<Type> | null
 
     constructor(value: Type){
         this.value = value
         this.next = null
-        this.previous = null
     }
-
 }
 
-class LinkedListStack<Type>{
+class Queue<Type>{
 
     private head: NodeType<Type> | null
     private tail: NodeType<Type> | null
@@ -36,9 +32,9 @@ class LinkedListStack<Type>{
         this.length = this.length - 1
     }
 
-    push(value: Type){
-        
-        const newNode = new LinkedListNode<Type>(value)
+    enqueue(value: Type){
+
+        const newNode = new LinkedListNode(value)
 
         if(!this.head || !this.tail){
 
@@ -46,7 +42,7 @@ class LinkedListStack<Type>{
             this.tail = newNode
 
             this.incrementLength()
-            
+
             return
 
         }
@@ -55,73 +51,73 @@ class LinkedListStack<Type>{
 
             this.head.next = newNode
             this.tail = newNode
-            this.tail.previous = this.head
 
             this.incrementLength()
 
             return
 
         }
-        
-        let current = this.head.next
 
-        while(current && current.next){
-            current = current.next
-        }
-
-        current.next = newNode
+        this.tail.next = newNode
         this.tail = newNode
-        this.tail.previous = current
 
         this.incrementLength()
 
     }
 
-    pop(){
+    dequeue(){
 
-        if(!this.length) throw new Error("There is no elements in the stack")
+        if(!this.head) throw new Error('Queue is empty')
 
-        if(!this.tail?.previous) return
-
-        this.tail = this.tail.previous
-        this.tail.next = null
-
+        this.head = this.head.next
         this.decrementLength()
 
     }
 
-    peek(){
-        return this.tail
+    getSize(){
+        return this.length
     }
 
     isEmpty(){
         return this.length === 0
     }
-    
-    getSize(){
-        return this.length
+
+    printValues(){
+
+        const values = []
+
+        let current = this.head
+
+        while(current && current.value){
+
+            values.push(current.value)
+            current = current.next
+
+        }
+
+        console.log(values)
+
     }
 
 }
 
-const stack = new LinkedListStack<number>()
+const queue = new Queue()
 
-// Push
-stack.push(1)
-stack.push(2)
-stack.push(3)
-stack.push(4)
+// Enqueue
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+queue.enqueue(4)
 
-// Pop
-stack.pop()
-stack.pop()
+// Dequeue
+queue.dequeue()
+queue.dequeue()
 
-// Peek
-const peekValue = stack.peek()
+// Length
+const size = queue.getSize()
 
 // Empty
-const isEmpty = stack.isEmpty()
+const isEmpty = queue.isEmpty()
+console.log(isEmpty)
 
-console.log(peekValue)
-
-export {}
+queue.printValues()
