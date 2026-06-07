@@ -1,10 +1,10 @@
 class HashMap{
 
-    private table: Array<Array<any>>
+    private table: Array<any>
     private size: number
 
     constructor(size: number = 10){
-        this.table = new Array(size).fill([])
+        this.table = new Array(size).fill(null).map(() => [])
         this.size = size
     }
 
@@ -59,6 +59,20 @@ class HashMap{
 
     }
 
+    delete(key: string){
+
+        const index = this.hashKey(key)
+        const table: Array<any> = this.table[index]
+
+        const position = table.findIndex(pair => pair[0] === key)
+        
+        if(position < 0) return false
+
+        table.splice(position, 1)
+        return true
+
+    }
+
 }
 
 
@@ -68,12 +82,14 @@ const hashMap = new HashMap()
 hashMap.set("name", "Midhun")
 hashMap.set("place", "TVM")
 hashMap.set("isDeveloper", true)
+hashMap.set("age", 20)
 
 // Get
 const valueOne = hashMap.get("name")
 const valueTwo = hashMap.get("place")
 
+// Delete
+hashMap.delete("age")
+
 console.log(valueOne)
 console.log(valueTwo)
-
-// [[name, Midhun], [age, 20], [place, TVM], [isDeveloper, true]]
