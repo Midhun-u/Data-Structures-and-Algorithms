@@ -30,6 +30,10 @@ class BinarySearchTree {
         this.size += 1
     }
 
+    private decrementSize(){
+        this.size -= 1
+    }
+
     insert(data: number) {
 
         const newNode = new TreeNode(data)
@@ -103,7 +107,7 @@ class BinarySearchTree {
         this.orderRecursion(this.root, "preorder")
     }
 
-    postorder(){
+    postorder() {
         this.orderRecursion(this.root, "postorder")
     }
 
@@ -135,30 +139,97 @@ class BinarySearchTree {
 
     }
 
+    remove(data: number) {
+
+        if (!this.root) return
+
+        this.root = this.removeRecursion(this.root, null, data)
+
+    }
+
+    private removeRecursion(root: NodeType | null, parentNode: NodeType | null, data: number): NodeType | null {
+
+        if (!root) return null
+
+        if (data < root.data) {
+
+            this.removeRecursion(root.left, root, data)
+
+        } else if (data > root.data) {
+
+            this.removeRecursion(root.right, root, data)
+
+        } else if (root.left && root.right) {
+
+            const successor = this.findMin(root.right)
+
+            if (successor) {
+
+                root.data = successor
+                this.removeRecursion(root.right, root, successor)
+
+            }
+
+        } else {
+            
+            if (root.left) {
+                
+                root = root.left
+                
+            } else if (root.right) {
+                
+                root = root.right
+                
+            } else {
+                
+                if(!parentNode) return null
+                
+                if(data < parentNode.data){
+                    parentNode.left = null
+                }else if(data > parentNode.data){
+                    parentNode.right = null
+                }
+                
+            }
+
+        }
+        
+        this.decrementSize()
+        return root
+
+    }
+
+    private findMin(root: NodeType | null): number | null {
+
+        if (!root) return null
+
+        if (!root.left) {
+            return root.data
+        }
+
+        return this.findMin(root.left)
+
+    }
+
 }
 
 const binarySearchTree = new BinarySearchTree()
 
 // Insert
-binarySearchTree.insert(8)
-binarySearchTree.insert(7)
 binarySearchTree.insert(10)
-binarySearchTree.insert(6)
-binarySearchTree.insert(11)
-binarySearchTree.insert(15)
-binarySearchTree.insert(30)
+binarySearchTree.insert(8)
+binarySearchTree.insert(9)
+binarySearchTree.insert(7)
 
 // Contains
-const isContain = binarySearchTree.contains(15)
-console.log("IsContain: ", isContain)
+const contain = binarySearchTree.contains(15)
+console.log("Contain: ", contain)
+
+// Remove
+binarySearchTree.remove(10)
 
 // Inorder
 binarySearchTree.inorder()
 
-// Preorder
-binarySearchTree.preorder()
-
-// Postorder
-binarySearchTree.postorder()
 
 export { }
