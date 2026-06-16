@@ -159,6 +159,7 @@ class BinarySearchTree {
 
             if (!root.left && !root.right) {
                 root = null
+                this.decrementSize()
             } else if (root.right) {
                 root.data = this.successor(root)
                 root.right = this.removeHelper(root.right, root.data)
@@ -221,7 +222,7 @@ const contain = binarySearchTree.contains(15)
 console.log("Contain: ", contain)
 
 // Remove
-binarySearchTree.remove(70)
+binarySearchTree.remove(80)
 
 // Inorder
 binarySearchTree.inorder()
