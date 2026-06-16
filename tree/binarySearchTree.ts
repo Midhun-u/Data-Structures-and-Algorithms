@@ -30,7 +30,7 @@ class BinarySearchTree {
         this.size += 1
     }
 
-    private decrementSize(){
+    private decrementSize() {
         this.size -= 1
     }
 
@@ -100,18 +100,18 @@ class BinarySearchTree {
     }
 
     inorder() {
-        this.orderRecursion(this.root, "inorder")
+        this.orderHelper(this.root, "inorder")
     }
 
     preorder() {
-        this.orderRecursion(this.root, "preorder")
+        this.orderHelper(this.root, "preorder")
     }
 
     postorder() {
-        this.orderRecursion(this.root, "postorder")
+        this.orderHelper(this.root, "postorder")
     }
 
-    private orderRecursion(node: NodeType | null, type: "inorder" | "preorder" | "postorder") {
+    private orderHelper(node: NodeType | null, type: "inorder" | "preorder" | "postorder") {
 
         if (!node) {
             return null
@@ -119,96 +119,88 @@ class BinarySearchTree {
 
         if (type === "inorder") {
 
-            this.orderRecursion(node.left, type)
+            this.orderHelper(node.left, type)
             console.log(node.data)
-            this.orderRecursion(node.right, type)
+            this.orderHelper(node.right, type)
 
         }
 
         if (type === "preorder") {
             console.log(node.data)
-            this.orderRecursion(node.left, type)
-            this.orderRecursion(node.right, type)
+            this.orderHelper(node.left, type)
+            this.orderHelper(node.right, type)
         }
 
         if (type === "postorder") {
-            this.orderRecursion(node.left, type)
-            this.orderRecursion(node.right, type)
+            this.orderHelper(node.left, type)
+            this.orderHelper(node.right, type)
             console.log(node.data)
         }
 
     }
 
     remove(data: number) {
-
-        if (!this.root) return
-
-        this.root = this.removeRecursion(this.root, null, data)
-
+        this.root = this.removeHelper(this.root, data)
     }
 
-    private removeRecursion(root: NodeType | null, parentNode: NodeType | null, data: number): NodeType | null {
+    private removeHelper(root: NodeType | null, data: number): NodeType | null {
 
-        if (!root) return null
+        if (!root) return root
 
         if (data < root.data) {
 
-            this.removeRecursion(root.left, root, data)
+            root.left = this.removeHelper(root.left, data)
 
         } else if (data > root.data) {
 
-            this.removeRecursion(root.right, root, data)
-
-        } else if (root.left && root.right) {
-
-            const successor = this.findMin(root.right)
-
-            if (successor) {
-
-                root.data = successor
-                this.removeRecursion(root.right, root, successor)
-
-            }
+            root.right = this.removeHelper(root.right, data)
 
         } else {
-            
-            if (root.left) {
-                
-                root = root.left
-                
+
+            if (!root.left && !root.right) {
+                root = null
             } else if (root.right) {
-                
-                root = root.right
-                
-            } else {
-                
-                if(!parentNode) return null
-                
-                if(data < parentNode.data){
-                    parentNode.left = null
-                }else if(data > parentNode.data){
-                    parentNode.right = null
-                }
-                
+                root.data = this.successor(root)
+                root.right = this.removeHelper(root.right, root.data)
+            } else if (root.left) {
+                root.data = this.predecessor(root.left)
+                root.left = this.removeHelper(root.left, root.data)
             }
 
         }
-        
-        this.decrementSize()
+
         return root
 
     }
 
-    private findMin(root: NodeType | null): number | null {
+    private successor(root: NodeType) {
 
-        if (!root) return null
+        let node = root.right
+        if (!node) return 0
 
-        if (!root.left) {
-            return root.data
+        while (node.left) {
+            node = node.left
         }
 
-        return this.findMin(root.left)
+        return node.data
 
+    }
+
+    private predecessor(root: NodeType) {
+
+        let node = root.left
+        if (!node) return 0
+
+        while (node.right) {
+            node = node.right
+        }
+
+        return node.data
+
+    }
+
+    getSize() {
+        return this.size
     }
 
 }
@@ -216,20 +208,26 @@ class BinarySearchTree {
 const binarySearchTree = new BinarySearchTree()
 
 // Insert
-binarySearchTree.insert(10)
-binarySearchTree.insert(8)
-binarySearchTree.insert(9)
-binarySearchTree.insert(7)
+binarySearchTree.insert(50)
+binarySearchTree.insert(30)
+binarySearchTree.insert(70)
+binarySearchTree.insert(20)
+binarySearchTree.insert(40)
+binarySearchTree.insert(60)
+binarySearchTree.insert(80)
 
 // Contains
 const contain = binarySearchTree.contains(15)
 console.log("Contain: ", contain)
 
 // Remove
-binarySearchTree.remove(10)
+binarySearchTree.remove(70)
 
 // Inorder
 binarySearchTree.inorder()
 
+// Size
+const size = binarySearchTree.getSize()
+console.log("Size: ", size)
 
 export { }
