@@ -21,7 +21,7 @@ class MinHeap{
         
         while(index > 0){
 
-            const parentIndex = Math.round((index - 1) / 2)
+            const parentIndex = Math.round((index - 1) / 2) // Equation for finding parent of a child
             
             if(this.heap[parentIndex] < this.heap[index]) break
 
@@ -39,8 +39,54 @@ class MinHeap{
         console.log(this.heap)
     }
 
-    remove(){
+    remove(data: number){
+
+        const removeElementIndex = this.heap.findIndex(value => value === data)
+
+        if(removeElementIndex < 0) return
+
+        const lastElement = this.heap[this.heap.length - 1]
+        this.heap[removeElementIndex] = lastElement
+        this.heap.pop()
+
+        this.heapifyDown(removeElementIndex)
+
+    }
+
+    private heapifyDown(index: number){
         
+        const length = this.heap.length
+
+        while(true){
+
+            let smallest = index
+            const left = 2 * index + 1
+            const right = left + 1
+
+            if(
+                left < length && 
+                this.heap[left] < this.heap[index]
+            ){
+                smallest = left
+            }else if(
+                right < length &&
+                this.heap[right] < this.heap[index]
+            ){
+                smallest = right
+            }
+
+            if(smallest === index){
+                break
+            }
+
+            const temp = this.heap[index]
+            this.heap[index] = this.heap[smallest]
+            this.heap[smallest] = temp
+
+            index = smallest
+
+        }
+
     }
 
 }
@@ -51,6 +97,13 @@ const minHeap = new MinHeap()
 minHeap.insert(10)
 minHeap.insert(20)
 minHeap.insert(5)
+minHeap.insert(30)
+minHeap.insert(50)
+minHeap.insert(1)
+minHeap.insert(35)
+
+// Remove
+minHeap.remove(10)
 
 // Print
 minHeap.print()
